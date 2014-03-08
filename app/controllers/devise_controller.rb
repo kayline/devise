@@ -1,5 +1,6 @@
 # All Devise controllers are inherited from here.
 class DeviseController < Devise.parent_controller.constantize
+
   include Devise::Controllers::ScopedViews
 
   helper DeviseHelper
@@ -11,6 +12,8 @@ class DeviseController < Devise.parent_controller.constantize
 
   prepend_before_filter :assert_is_devise_resource!
   respond_to :html if mimes_for_respond_to.empty?
+
+  self.responder = Devise.responder_name.constantize if Devise.responder_name
 
   # Gets the actual resource stored in the instance variable
   def resource
